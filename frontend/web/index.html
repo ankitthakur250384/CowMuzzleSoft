@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Cow Muzzle Detection</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 40px; }
+      .uploader { border: 1px dashed #ccc; padding: 20px; width: 480px; }
+      img.preview { max-width: 100%; height: auto; display:block; margin-top:10px }
+      .results { margin-top: 20px; }
+    </style>
+  </head>
+  <body>
+    <h1>Cow Muzzle Detection</h1>
+    <div class="uploader">
+      <input type="file" id="file" accept="image/*">
+      <button id="upload">Upload & Detect</button>
+      <div id="status"></div>
+      <img id="preview" class="preview" src="" alt="preview" />
+    </div>
+
+    <div class="results">
+      <h2>Detections</h2>
+      <pre id="output">No results yet</pre>
+    </div>
+
+    <script>
+      const fileInput = document.getElementById('file')
+      const uploadBtn = document.getElementById('upload')
+      const status = document.getElementById('status')
+      const output = document.getElementById('output')
+      const preview = document.getElementById('preview')
+
+      fileInput.addEventListener('change', e => {
+        const f = e.target.files[0]
+        if (f) preview.src = URL.createObjectURL(f)
+      })
+
+      uploadBtn.addEventListener('click', async () => {
+        const f = fileInput.files[0]
+        if (!f) { alert('Select an image first'); return }
+        status.textContent = 'Uploading...'
+        const form = new FormData()
+        form.append('file', f, f.name)
+
+        try {
+          const resp = await fetch('/api/detect', { method: 'POST', body: form })
+          const data = await resp.json()
+          output.textContent = JSON.stringify(data, null, 2)
+          status.textContent = 'Done'
+        } catch (err) {
+          console.error(err)
+          status.textContent = 'Error'
+          output.textContent = String(err)
+        }
+      })
+    </script>
+  </body>
+</html>
