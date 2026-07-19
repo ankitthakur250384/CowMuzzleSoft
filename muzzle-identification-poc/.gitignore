@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.env
+
+# Flutter
+build/
+.flutter-plugins
+.packages
+.pub-cache/
+
+# models and storage
+/muzzle-identification-poc/models/
+/muzzle-identification-poc/storage/
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Secrets
+secrets.json

@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./storage:/app/storage
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: muzzle
+      POSTGRES_USER: muzzle
+      POSTGRES_PASSWORD: muzzle
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
