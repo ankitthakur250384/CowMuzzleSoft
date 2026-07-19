@@ -1,0 +1,1 @@
+# build faiss index script
